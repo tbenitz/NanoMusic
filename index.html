@@ -4,19 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NanoMaestro Realtime</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://huggingface.co/spaces/utkucoban/NanoMaestro-Realtime/raw/main/styles.css?v=2.2">
 </head>
 <body>
-  <h2 style="text-align:center; margin-top:50px; color:#6f9c78;">NanoMaestro Realtime</h2>
-  <p style="text-align:center;">Click anywhere on the page first to allow audio, then use the controls below.</p>
+  <div id="status" style="padding:20px; text-align:center; color:#6f9c78;">Loading NanoMaestro... Click anywhere after it loads to enable audio.</div>
 
-  <!-- The app will inject the full UI once loaded -->
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tone@15.1.22/build/Tone.js"></script>
   
-  <!-- Load app.js as regular script (bypasses module MIME issue) -->
-  <script src="https://huggingface.co/spaces/utkucoban/NanoMaestro-Realtime/raw/main/app.js"></script>
-
+  <script>
+    // Wait for DOM + scripts
+    window.addEventListener('load', () => {
+      const script = document.createElement('script');
+      script.src = "https://huggingface.co/spaces/utkucoban/NanoMaestro-Realtime/raw/main/app.js";
+      document.head.appendChild(script);
+      
+      // Click anywhere to resume audio
+      document.addEventListener('click', () => {
+        if (Tone && Tone.start) Tone.start();
+      }, { once: true });
+    });
+  </script>
 </body>
 </html>
