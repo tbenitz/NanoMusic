@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>NanoMaestro Realtime</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Full inlined CSS from the space */
+    :root {
+      --color-bg: #090b0d;
+      --color-panel: #111418;
+      --color-border: rgba(255,255,255,0.07);
+      --color-accent: #6f9c78;
+      --color-text-primary: #f1f3f5;
+      --color-text-muted: #868e96;
+    }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--color-bg); color: var(--color-text-primary); margin:0; padding:0; height:100vh; overflow:hidden; }
+    .dashboard-shell { height: 100vh; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; }
+    .dashboard-content { flex: 1; display: grid; grid-template-columns: 240px 1fr 280px; gap: 20px; }
+    .visualizer-panel, .controls-panel-bottom, .settings-dropdown, .playing-style-panel {
+      background: var(--color-panel); border: 1px solid var(--color-border); border-radius: 12px; padding: 20px;
+    }
+    button { padding: 12px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin: 4px; }
+    .btn-primary { background: var(--color-accent); color: #111; }
+    canvas { width: 100%; height: 100%; background: #000; border-radius: 8px; }
+    /* Add more styles if needed - this covers the core layout */
+  </style>
+</head>
+<body>
+
+  <!-- Full UI Structure (inlined) -->
+  <main class="dashboard-shell">
+    <header style="padding-bottom:16px; border-bottom:1px solid var(--color-border); margin-bottom:20px;">
+      <h2>NanoMaestro Realtime</h2>
+      <p id="appStatus">Loading remote files...</p>
+    </header>
+
+    <div class="dashboard-content">
+      <!-- Left Info -->
+      <aside style="display:flex; flex-direction:column; gap:16px;">
+        <div class="visualizer-panel">
+          <h5>About</h5>
+          <p>Tiny real-time music model running locally in your browser.</p>
+        </div>
+      </aside>
+
+      <!-- Main Visualizer -->
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <div class="visualizer-panel" style="flex:1;">
+          <h3>Performance Visualizer</h3>
+          <canvas id="noteCanvas" width="800" height="400"></canvas>
+        </div>
+        <div class="controls-panel-bottom">
+          <button id="startBtn" class="btn-primary">▶ Start Performance</button>
+          <button id="stopBtn">⏹ Stop</button>
+          <button id="newSongBtn">New Song</button>
+        </div>
+      </div>
+
+      <!-- Right Settings -->
+      <aside style="display:flex; flex-direction:column; gap:16px;">
+        <div class="settings-dropdown">
+          <h5>Generation Settings</h5>
+          <label>Temperature: <span id="temperatureValue">0.85</span></label>
+          <input id="temperature" type="range" min="0.45" max="1.35" step="0.05" value="0.85">
+        </div>
+        <div class="playing-style-panel">
+          <h5>Playing Style</h5>
+          <!-- Style buttons would be populated by app.js -->
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Required External Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tone@15.1.22/build/Tone.js"></script>
+
+  <!-- Core App Logic (remote from HF) -->
+  <script type="module" src="https://huggingface.co/spaces/utkucoban/NanoMaestro-Realtime/raw/main/app.js"></script>
+
+  <!-- Worker is loaded inside app.js - it should pull worker.js automatically if the path is correct in app.js -->
+
+</body>
+</html>
